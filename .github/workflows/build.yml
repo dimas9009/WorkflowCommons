@@ -75,8 +75,9 @@ jobs:
           fi
       - name: Create release
         run: |
-          cd $GITHUB_WORKSPACE
-          dir          
+          cd app/Source
+          MX_VERSION=$(sqlite3 ExpenseRequestStarterApp.mpr 'SELECT _ProductVersion FROM _MetaData LIMIT 1')
+          echo $MX_VERSION
 
       - name: Collect docker logs
         id: collectLogs
