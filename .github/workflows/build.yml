@@ -77,7 +77,11 @@ jobs:
         run: |
           cd app/Source
           MX_VERSION=$(sqlite3 ExpenseRequestStarterApp.mpr 'SELECT _ProductVersion FROM _MetaData LIMIT 1')
-          echo $MX_VERSION
+          cd $GITHUB_WORKSPACE/mx-tools
+          echo "MX Version=$MX_VERSION"
+          make version=$MX_VERSION build
+          MX_TOOLS_CONTAINER=$(mendixlabs/mx-docker-tools:$MX_VERSION)
+          docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app MX_TOOLS_CONTAINER mxutil.exe create-module-package --package-dir /opt/app/../Releases/ /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
 
       - name: Collect docker logs
         id: collectLogs
