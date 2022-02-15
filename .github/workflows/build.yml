@@ -11,9 +11,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-   MX_VERSION: 0.0.0.0
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -42,8 +39,9 @@ jobs:
       - name: Define MX_VERSION
         run: |
           cd $GITHUB_WORKSPACE/app/Source
-          ${MX_VERSION}=$(sqlite3 ExpenseRequestStarterApp.mpr 'SELECT _ProductVersion FROM _MetaData LIMIT 1')
-          
+          MX_VERSION=$(sqlite3 ExpenseRequestStarterApp.mpr 'SELECT _ProductVersion FROM _MetaData LIMIT 1')
+          echo "Detected MX Version:$MX_VERSION"
+          echo "MX_VERSION=$MX_VERSION" >> $GITHUB_ENV
 
       - name: Create build directory
         run: mkdir build-pack/build
@@ -85,14 +83,10 @@ jobs:
       - name: Build MX Util
         run: |
           cd app/Source
-          MX_VERSION=$(sqlite3 ExpenseRequestStarterApp.mpr 'SELECT _ProductVersion FROM _MetaData LIMIT 1')
-          cd $GITHUB_WORKSPACE/mx-tools
-          echo "MX Version=$MX_VERSION"
           make version=$MX_VERSION build
 
       - name: Run MX Util
         run: |
-          MX_VERSION=$(sqlite3 ExpenseRequestStarterApp.mpr 'SELECT _ProductVersion FROM _MetaData LIMIT 1')
           MX_TOOLS_CONTAINER=$(mendixlabs/mx-docker-tools:$MX_VERSION)
           echo "TESTSTST: $MX_TOOLS_CONTAINER"
           # docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app MX_TOOLS_CONTAINER mxutil.exe create-module-package --package-dir /opt/app/ /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
