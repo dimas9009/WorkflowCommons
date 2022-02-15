@@ -46,7 +46,9 @@ jobs:
       - name: Build MX Util
         run: |
           cd $GITHUB_WORKSPACE/mx-tools
-          make version=${{env.MX_VERSION}} build
+          docker build ./src --build-arg MX_VERSION=${{env.MX_VERSION}} -t mendixlabs/mx-docker-tools:${{env.MX_VERSION}}
+          docker push mendixlabs/mx-docker-tools:${{env.MX_VERSION}}
+          docker container ls --all
 
       - name: Test containers
         run: docker container ls --all
