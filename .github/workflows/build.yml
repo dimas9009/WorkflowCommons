@@ -51,7 +51,7 @@ jobs:
       - name: Run MX Util
         run: |
           MX_TOOLS_CONTAINER=$(mendixlabs/mx-docker-tools:${{env.MX_VERSION}})
-          docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app MX_TOOLS_CONTAINER mxutil.exe create-module-package --package-dir /opt/app/ /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
+          docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app -i MX_TOOLS_CONTAINER mxutil.exe create-module-package --package-dir /opt/app/ /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
 
       - name: Create build directory
         run: mkdir build-pack/build
