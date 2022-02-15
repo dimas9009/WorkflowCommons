@@ -43,6 +43,9 @@ jobs:
           echo "Detected MX Version:$VERSION"
           # echo "MX_VERSION=$VERSION" >> $GITHUB_ENV
 
+      - name: Test
+        run: echo ${{ env.MX_VERSION }}
+
       - name: Create build directory
         run: mkdir build-pack/build
       
