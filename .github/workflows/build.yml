@@ -73,15 +73,18 @@ jobs:
             echo “Failed to execute tests”
             exit 1
           fi
-      - name: Create release
+      - name: Build MX Util
         run: |
           cd app/Source
           MX_VERSION=$(sqlite3 ExpenseRequestStarterApp.mpr 'SELECT _ProductVersion FROM _MetaData LIMIT 1')
           cd $GITHUB_WORKSPACE/mx-tools
           echo "MX Version=$MX_VERSION"
           make version=$MX_VERSION build
+
+      - name: Run MX Util
           MX_TOOLS_CONTAINER=$(mendixlabs/mx-docker-tools:$MX_VERSION)
-          docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app MX_TOOLS_CONTAINER mxutil.exe create-module-package --package-dir /opt/app/ /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
+          echo "TESTSTST: $MX_TOOLS_CONTAINER"
+          # docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app MX_TOOLS_CONTAINER mxutil.exe create-module-package --package-dir /opt/app/ /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
 
       - name: Collect docker logs
         id: collectLogs
