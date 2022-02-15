@@ -41,18 +41,10 @@ jobs:
           cd $GITHUB_WORKSPACE/app/Source
           VERSION=$(sqlite3 ExpenseRequestStarterApp.mpr 'SELECT _ProductVersion FROM _MetaData LIMIT 1')
           echo "Detected MX Version:$VERSION"
-          # echo "MX_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "MX_VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Test
         run: echo ${{ env.MX_VERSION }}
-
-      - name: Set the value
-        run: |
-          echo "action_state=yellow" >> $GITHUB_ENV
-        
-      - name: Use the value
-        run: |
-          echo "${{ env.action_state }}" # This will output 'yellow'
 
       - name: Create build directory
         run: mkdir build-pack/build
