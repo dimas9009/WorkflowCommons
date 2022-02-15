@@ -43,8 +43,15 @@ jobs:
           echo "Detected MX Version:$VERSION"
           echo "MX_VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Test
-        run: echo ${{ env.MX_VERSION }}
+      - name: Build MX Util
+        run: |
+          cd $GITHUB_WORKSPACE/mx-tools
+          make version=${{env.MX_VERSION}} build
+
+      - name: Run MX Util
+        run: |
+          MX_TOOLS_CONTAINER=$(mendixlabs/mx-docker-tools:${{env.MX_VERSION}})
+          docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app MX_TOOLS_CONTAINER mxutil.exe create-module-package --package-dir /opt/app/ /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
 
       - name: Create build directory
         run: mkdir build-pack/build
@@ -83,18 +90,6 @@ jobs:
             echo “Failed to execute tests”
             exit 1
           fi
-      - name: Build MX Util
-        run: |
-          cd app/Source
-          echo "TEST"
-          echo $MX_VERSION
-          make version=$MX_VERSION build
-
-      - name: Run MX Util
-        run: |
-          MX_TOOLS_CONTAINER=$(mendixlabs/mx-docker-tools:$MX_VERSION)
-          echo "TESTSTST: $MX_TOOLS_CONTAINER"
-          # docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app MX_TOOLS_CONTAINER mxutil.exe create-module-package --package-dir /opt/app/ /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
 
       - name: Collect docker logs
         id: collectLogs
