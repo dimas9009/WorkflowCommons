@@ -39,9 +39,9 @@ jobs:
       - name: Define MX_VERSION
         run: |
           cd $GITHUB_WORKSPACE/app/Source
-          MX_VERSION=$(sqlite3 ExpenseRequestStarterApp.mpr 'SELECT _ProductVersion FROM _MetaData LIMIT 1')
-          echo "Detected MX Version:$MX_VERSION"
-          echo "MX_VERSION=$MX_VERSION" >> $GITHUB_ENV
+          test=$(sqlite3 ExpenseRequestStarterApp.mpr 'SELECT _ProductVersion FROM _MetaData LIMIT 1')
+          echo "Detected MX Version:$test"
+          # echo "MX_VERSION=$MX_VERSION" >> $GITHUB_ENV
 
       - name: Create build directory
         run: mkdir build-pack/build
