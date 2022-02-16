@@ -43,17 +43,17 @@ jobs:
           echo "Detected MX Version:$VERSION"
           echo "MX_VERSION=$VERSION" >> $GITHUB_ENV
 
-      # - name: Build MX Util
-      #   run: |
-      #     cd $GITHUB_WORKSPACE/mx-tools
-      #     docker build ./src --build-arg MX_VERSION=${{env.MX_VERSION}} -t mendixlabs/mx-docker-tools:${{env.MX_VERSION}}
-      #     docker push mendixlabs/mx-docker-tools:${{env.MX_VERSION}}
-      #     docker container ls --all
+      - name: Build MX Util
+        run: |
+          cd $GITHUB_WORKSPACE/mx-tools
+          docker build ./src --build-arg MX_VERSION=${{env.MX_VERSION}} -t mendixlabs/mx-docker-tools:${{env.MX_VERSION}}
+          docker push mendixlabs/mx-docker-tools:${{env.MX_VERSION}}
+          docker container ls --all
 
-      # - name: Run MX Util
-      #   run: |
-      #     MX_TOOLS_CONTAINER=$(mendixlabs/mx-docker-tools:${{env.MX_VERSION}})
-      #     docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app -i MX_TOOLS_CONTAINER mxutil.exe create-module-package --package-dir /opt/app/ /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
+      - name: Run MX Util
+        run: |
+          MX_TOOLS_CONTAINER=$(mendixlabs/mx-docker-tools:${{env.MX_VERSION}})
+          docker run -i MX_TOOLS_CONTAINER mxutil.exe create-module-package
 
       - name: Create build directory
         run: mkdir build-pack/build
