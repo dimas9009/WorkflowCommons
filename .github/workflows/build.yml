@@ -50,9 +50,19 @@ jobs:
 
       - name: Run MX Util
         run: |
-          MX_TOOLS_CONTAINER="mendixlabs/mx-docker-tools:"${{env.MX_VERSION}}
-          echo $MX_TOOLS_CONTAINER
-          docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app -i $MX_TOOLS_CONTAINER mxutil.exe create-module-package --package-dir /opt/app/ /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
+          MX_TOOLS_IMAGE="mendixlabs/mx-docker-tools:"${{env.MX_VERSION}}
+          mkdir $GITHUB_WORKSPACE/app/Source/packages
+          docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app -i $MX_TOOLS_IMAGE mxutil.exe create-module-package --package-dir /opt/app/packages /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons"
+          cp -f $GITHUB_WORKSPACE/app/Source/packages/WorkflowCommons.mpk $GITHUB_WORKSPACE/app/Releases/WorkflowCommon-Latest.mpk
+          rm -rf $GITHUB_WORKSPACE/app/Source/packages
+
+      - uses: actions/checkout@v2
+      - name: Commit release
+        run: |
+            git config --global user.name 'Github Workflow'
+            git config --global user.email 'noreply@github.com'
+            git commit -am "Autorelease WorkflowCommon"
+            git push
 
       - name: Create build directory
         run: mkdir build-pack/build
