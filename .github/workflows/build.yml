@@ -56,7 +56,7 @@ jobs:
           cp -f $GITHUB_WORKSPACE/app/Source/packages/WorkflowCommons.mpk $GITHUB_WORKSPACE/app/Releases/WorkflowCommon-Latest.mpk
           rm -rf $GITHUB_WORKSPACE/app/Source/packages
 
-      - uses: actions/checkout@v2
+      - name: Commit release
         run: |
             cd $GITHUB_WORKSPACE/app/Releases
             git config --global user.name 'Github Workflow'
