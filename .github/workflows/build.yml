@@ -51,7 +51,7 @@ jobs:
       - name: Run MX Util
         run: |
           MX_TOOLS_CONTAINER=$(mendixlabs/mx-docker-tools:${{env.MX_VERSION}})
-          docker run -i MX_TOOLS_CONTAINER mxutil.exe create-module-package
+          docker run -i mendixlabs/mx-docker-tools:${{env.MX_VERSION}} mxutil.exe create-module-package
 
       - name: Create build directory
         run: mkdir build-pack/build
