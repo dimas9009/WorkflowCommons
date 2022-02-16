@@ -50,6 +50,7 @@ jobs:
 
       - name: Run MX Util
         run: |
+          docker images -a
           MX_TOOLS_CONTAINER=$(mendixlabs/mx-docker-tools:${{env.MX_VERSION}})
           docker run -mendixlabs/mx-docker-tools:${{env.MX_VERSION}} mxutil.exe
 
