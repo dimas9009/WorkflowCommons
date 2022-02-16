@@ -57,10 +57,11 @@ jobs:
           rm -rf $GITHUB_WORKSPACE/app/Source/packages
 
       - uses: actions/checkout@v2
-      - name: Commit release
         run: |
+            cd $GITHUB_WORKSPACE/app/Releases
             git config --global user.name 'Github Workflow'
             git config --global user.email 'noreply@github.com'
+            git add WorkflowCommon-Latest.mpk
             git commit -am "Autorelease WorkflowCommon"
             git push
 
