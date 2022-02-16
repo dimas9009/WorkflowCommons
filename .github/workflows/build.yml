@@ -47,8 +47,6 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/mx-tools
           docker build ./src --build-arg MX_VERSION=${{env.MX_VERSION}} -t mendixlabs/mx-docker-tools:${{env.MX_VERSION}}
-          docker push mendixlabs/mx-docker-tools:${{env.MX_VERSION}}
-          docker container ls --all
 
       - name: Run MX Util
         run: |
