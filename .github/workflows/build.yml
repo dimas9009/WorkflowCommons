@@ -103,6 +103,7 @@ jobs:
             cd $GITHUB_WORKSPACE/app/Releases
             git config --global user.name 'Github Workflow'
             git config --global user.email 'noreply@github.com'
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
             git add WorkflowCommon-Latest.mpk
             git commit -am "Auto release WorkflowCommon"
             git push
