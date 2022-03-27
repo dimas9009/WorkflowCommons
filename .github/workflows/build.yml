@@ -28,7 +28,7 @@ jobs:
       # Checks-out mendix/docker-mendix-buildpack to $GITHUB_WORKSPACE/build-pack folder
       - uses: actions/checkout@v2
         with:
-          repository: 'mendix/docker-mendix-buildpack'
+          repository: 'dimas9009/docker-mendix-buildpack/tree/test-postgres'
           path: 'build-pack'
 
       - uses: actions/checkout@v2
