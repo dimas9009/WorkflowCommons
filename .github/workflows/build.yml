@@ -100,6 +100,15 @@ jobs:
             if [ -d "$TEMP_UNZIP_FOLDER" ]; then rm -Rf $TEMP_UNZIP_FOLDER; fi
             mkdir $TEMP_UNZIP_FOLDER
             unzip -x "$GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk" -d $TEMP_UNZIP_FOLDER
+
+            cd $TEMP_UNZIP_FOLDER
+            for i in *; do
+              if ! grep -qxFe "$i" $GITHUB_WORKSPACE/app/.github/workflows/AllowedWidgetsList.txt; then
+                echo "Deleting: $i"
+                rm "$i"
+              fi
+            done
+
             if [ -d "$TEMP_UNZIP_FOLDER" ]; then rm -Rf $TEMP_UNZIP_FOLDER; fi
 
       # - name: Commit release
