@@ -93,11 +93,12 @@ jobs:
       #     docker run -v $GITHUB_WORKSPACE/app/Source:/opt/app -i $MX_TOOLS_IMAGE mxutil.exe create-module-package --package-dir /opt/app/packages /opt/app/ExpenseRequestStarterApp.mpr "WorkflowCommons" --exclude-files="(resources|userlib)" | tee $GITHUB_WORKSPACE/out/mxutil.log
       #     cp -f $GITHUB_WORKSPACE/app/Source/packages/WorkflowCommons.mpk $GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk
       #     rm -rf $GITHUB_WORKSPACE/app/Source/packages
+
       - name: Delete rudiment widgets
         run: |
             TEMP_UNZIP_FOLDER="$GITHUB_WORKSPACE/TempUnzip"
-            mkdir $TEMP_UNZIP_FOLDER
-            unzip -x "$GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk" -d $TEMP_UNZIP_FOLDER
+            mkdir $TEMP_UNZIP_FOLDER | tee $GITHUB_WORKSPACE/out/test.log
+            unzip -x "$GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk" -d $TEMP_UNZIP_FOLDER | tee $GITHUB_WORKSPACE/out/test.log
 
       # - name: Commit release
       #   if: github.event_name != 'pull_request'
