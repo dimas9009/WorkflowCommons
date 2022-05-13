@@ -94,6 +94,12 @@ jobs:
       #     cp -f $GITHUB_WORKSPACE/app/Source/packages/WorkflowCommons.mpk $GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk
       #     rm -rf $GITHUB_WORKSPACE/app/Source/packages
 
+        - name: Delete rudiment widgets
+          run: |
+            TEMP_UNZIP_FOLDER="$GITHUB_WORKSPACE/TempUnzip"
+            mkdir $TEMP_UNZIP_FOLDER
+            unzip -x "$GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk" -d $TEMP_UNZIP_FOLDER
+
       # - name: Commit release
       #   if: github.event_name != 'pull_request'
       #   run: |
