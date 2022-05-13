@@ -97,19 +97,24 @@ jobs:
       - name: Delete rudiment widgets
         run: |
             TEMP_UNZIP_FOLDER="$GITHUB_WORKSPACE/TempUnzip"
+            TARGET_MPK="$GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk"
+            ALLOWED_LIST="$GITHUB_WORKSPACE/app/.github/workflows/AllowedWidgetsList.txt"
+
             if [ -d "$TEMP_UNZIP_FOLDER" ]; then rm -Rf $TEMP_UNZIP_FOLDER; fi
             mkdir $TEMP_UNZIP_FOLDER
-            unzip -x "$GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk" -d $TEMP_UNZIP_FOLDER
+            unzip -x $TARGET_MPK -d $TEMP_UNZIP_FOLDER
 
             cd "$TEMP_UNZIP_FOLDER/widgets"
             for i in *; do
-              if ! grep -qxFe "$i" $GITHUB_WORKSPACE/app/.github/workflows/AllowedWidgetsList.txt; then
+              if ! grep -qxFe "$i" $ALLOWED_LIST; then
                 echo "Deleting: $i"
                 rm "$i"
               fi
             done
 
-            zip -r myfolder.zip $TEMP_UNZIP_FOLDER
+            zip -r WorkflowCommons-Latest.mpk $TEMP_UNZIP_FOLDER
+
+            mv -f WorkflowCommons-Latest.mpk $GITHUB_WORKSPACE/app/Releases/
 
             if [ -d "$TEMP_UNZIP_FOLDER" ]; then rm -Rf $TEMP_UNZIP_FOLDER; fi
 
