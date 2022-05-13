@@ -109,6 +109,8 @@ jobs:
               fi
             done
 
+            zip -r myfolder.zip $TEMP_UNZIP_FOLDER
+
             if [ -d "$TEMP_UNZIP_FOLDER" ]; then rm -Rf $TEMP_UNZIP_FOLDER; fi
 
       # - name: Commit release
