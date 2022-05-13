@@ -97,8 +97,10 @@ jobs:
       - name: Delete rudiment widgets
         run: |
             TEMP_UNZIP_FOLDER="$GITHUB_WORKSPACE/TempUnzip"
-            mkdir $TEMP_UNZIP_FOLDER | tee $GITHUB_WORKSPACE/out/test.log
+            if [ -d "$TEMP_UNZIP_FOLDER" ]; then rm -Rf $TEMP_UNZIP_FOLDER; fi
+            mkdir $TEMP_UNZIP_FOLDER
             unzip -x "$GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk" -d $TEMP_UNZIP_FOLDER | tee $GITHUB_WORKSPACE/out/test.log
+            if [ -d "$TEMP_UNZIP_FOLDER" ]; then rm -Rf $TEMP_UNZIP_FOLDER; fi
 
       # - name: Commit release
       #   if: github.event_name != 'pull_request'
