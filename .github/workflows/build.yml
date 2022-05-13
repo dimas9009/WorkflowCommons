@@ -101,7 +101,7 @@ jobs:
             mkdir $TEMP_UNZIP_FOLDER
             unzip -x "$GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk" -d $TEMP_UNZIP_FOLDER
 
-            cd $TEMP_UNZIP_FOLDER
+            cd "$TEMP_UNZIP_FOLDER/widgets"
             for i in *; do
               if ! grep -qxFe "$i" $GITHUB_WORKSPACE/app/.github/workflows/AllowedWidgetsList.txt; then
                 echo "Deleting: $i"
