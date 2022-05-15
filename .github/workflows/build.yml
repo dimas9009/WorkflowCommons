@@ -112,8 +112,8 @@ jobs:
               fi
             done
             
-            cd $GITHUB_WORKSPACE
-            zip -r WorkflowCommons-Latest.mpk TempUnzip/*
+            cd $TEMP_UNZIP_FOLDER
+            zip -r WorkflowCommons-Latest.mpk *
 
             mv -f WorkflowCommons-Latest.mpk $GITHUB_WORKSPACE/app/Releases/
 
