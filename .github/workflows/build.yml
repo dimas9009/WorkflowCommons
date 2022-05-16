@@ -100,15 +100,21 @@ jobs:
             TARGET_MPK="$GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk"
             ALLOWED_LIST="$GITHUB_WORKSPACE/app/.github/workflows/AllowedWidgetsList.txt"
 
+            if [! -f "$ALLOWED_LIST" ]; then 
+              echo “Unable to found file AllowedWidgetsList.txt”
+              exit 1; 
+            fi
+
             if [ -d "$TEMP_UNZIP_FOLDER" ]; then rm -Rf $TEMP_UNZIP_FOLDER; fi
             mkdir $TEMP_UNZIP_FOLDER
             unzip -x $TARGET_MPK -d $TEMP_UNZIP_FOLDER
 
             cd "$TEMP_UNZIP_FOLDER/widgets"
             for i in *; do
-              if ! grep -qxFe "$i" $ALLOWED_LIST; then
-                echo "Deleting: $i"
+              if ! grep -q "$i" $ALLOWED_LIST; then
+                echo "Deleting widget: $i" | tee -a $GITHUB_WORKSPACE/out/deletedWidgets.log
                 rm "$i"
+                sed -i '/$i/d' $TEMP_UNZIP_FOLDER/package.xml
               fi
             done
             
