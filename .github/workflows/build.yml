@@ -56,12 +56,12 @@ jobs:
         run: |
           Organization="dimas9009"
           Project="WorkflowCommons"
-          ReleaseTag=$(curl https://api.github.com/repos/$Organization/$Project/releases/latest -s | jq .tag_name -r)
+          ReleaseTag=$(curl https://api.github.com/repos/$Organization/$Project/releases/latest -s | jq .tag_name -r | tr -d '[:space:]')
           echo "Detected release tag in github:$ReleaseTag"
           cd $GITHUB_WORKSPACE/app
           DeclaredRelease=$(sed -n 's/^## Release //p' ReleaseNotes.md | head -n 1 | tr -d '[:space:]')
           echo "Declared release local file:$DeclaredRelease"
-          if $DeclaredRelease=$ReleaseTag; then 
+          if [ $DeclaredRelease -eq $ReleaseTag]; then 
             echo “File ReleaseNotes.md missing new changes. Please add new wersion and release notes into this file.”
             exit 1; 
           fi
