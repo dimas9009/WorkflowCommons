@@ -54,7 +54,8 @@ jobs:
 
       - name: Check Release notes
         run: |
-          echo ${GITHUB_REF#refs/*/}
+          TAG = $(curl https://api.github.com/repos/dimas9009/WorkflowCommons/releases/latest -s | jq .name -r)
+          echo $TAG
           
 
 
