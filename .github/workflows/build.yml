@@ -61,8 +61,8 @@ jobs:
           cd $GITHUB_WORKSPACE/app
           DeclaredRelease=$(sed -n 's/^## Release //p' ReleaseNotes.md | head -n 1)
           echo "Declared release local file:$DeclaredRelease"
-          if [$DeclaredRelease == $ReleaseTag]; then 
-            echo “File ReleaseNotes.md missing new changes. Please add new wersion and release notes into this file”
+          if [[$DeclaredRelease == $ReleaseTag]]; then 
+            echo “File ReleaseNotes.md missing new changes. Please add new wersion and release notes into this file.”
             exit 1; 
           fi
           
