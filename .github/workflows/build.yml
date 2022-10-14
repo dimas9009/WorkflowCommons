@@ -53,10 +53,8 @@ jobs:
       #   run: cp -v -r app/Source/. build-pack/build
 
       - name: Check Release notes
-        run: |
-          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-          echo $RELEASE_VERSION
-          echo ${{ env.RELEASE_VERSION }}
+        run: ${GITHUB_REF/refs\/tags\//}
+          
 
 
       # - name: Build docker image
