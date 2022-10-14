@@ -59,9 +59,9 @@ jobs:
           ReleaseTag=$(curl https://api.github.com/repos/$Organization/$Project/releases/latest -s | jq .tag_name -r)
           echo "Detected release tag in github:$ReleaseTag"
           cd $GITHUB_WORKSPACE/app
-          DeclaredRelease=$(sed -n 's/^## Release //p' ReleaseNotes.md | head -n 1)
+          DeclaredRelease=$(sed -n 's/^## Release //p' ReleaseNotes.md | head -n 1 | xarg)
           echo "Declared release local file:$DeclaredRelease"
-          if [[$DeclaredRelease==$ReleaseTag]]; then 
+          if [$DeclaredRelease=$ReleaseTag]; then 
             echo “File ReleaseNotes.md missing new changes. Please add new wersion and release notes into this file.”
             exit 1; 
           fi
