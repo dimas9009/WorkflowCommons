@@ -56,7 +56,7 @@ jobs:
         run: |
           Organization="dimas9009"
           Project="WorkflowCommons"
-          ReleaseTag=$(curl https://api.github.com/repos/$Organization/$Project/releases/latest -s | jq .tag_name -r | tr -d '[:space:]')
+          ReleaseTag=$(curl https://api.github.com/repos/$Organization/$Project/releases/latest -s | jq .tag_name -r)
           echo "Detected release tag in github:$ReleaseTag"
           cd $GITHUB_WORKSPACE/app
           DeclaredRelease=$(sed -n 's/^## Release //p' ReleaseNotes.md | head -n 1 | tr -d '[:space:]')
