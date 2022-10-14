@@ -53,7 +53,8 @@ jobs:
       #   run: cp -v -r app/Source/. build-pack/build
 
       - name: Check Release notes
-        run: ${GITHUB_REF/refs\/tags\//}
+        run: |
+          echo ${GITHUB_REF#refs/*/}
           
 
 
