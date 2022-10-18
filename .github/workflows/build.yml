@@ -62,7 +62,7 @@ jobs:
           DeclaredRelease=$(sed -n 's/^## Release //p' ReleaseNotes.md | head -n 1 | tr -d '[:space:]')
           echo "Declared release in the local file:\"$DeclaredRelease\""
           if [ "$ReleaseTag" == "$DeclaredRelease" ]; then
-            echo “File ReleaseNotes.md missing new changes. Please add new wersion and release notes into this file.”
+            echo “There are no new changes in the file \"ReleaseNotes.md\"". Please add new version and release notes into this file before make a merge request.”
             exit 1; 
           fi
           
