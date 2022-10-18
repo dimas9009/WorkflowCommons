@@ -52,19 +52,26 @@ jobs:
       # - name: Copy application files to build directory
       #   run: cp -v -r app/Source/. build-pack/build
 
-      - name: Check Release notes
+      - name: Check Release notes and make new release tag
         run: |
+          # TODO: Change organization and Project
           Organization="dimas9009"
           Project="WorkflowCommons"
+          ReleaseNotesFile="ReleaseNotes.md"
           ReleaseTag=$(curl https://api.github.com/repos/$Organization/$Project/releases/latest -s | jq .tag_name -r | tr -d '[:space:]')
           echo "Detected release tag in github:\"$ReleaseTag\""
           cd $GITHUB_WORKSPACE/app
-          DeclaredRelease=$(sed -n 's/^## Release //p' ReleaseNotes.md | head -n 1 | tr -d '[:space:]')
+          if [! -f "$ReleaseNotesFile" ]; then 
+            echo “Unable to find file AllowedWidgetsList.txt”
+            exit 1; 
+          fi
+          DeclaredRelease=$(sed -n 's/^## Release //p' $ReleaseNotesFile | head -n 1 | tr -d '[:space:]')
           echo "Declared release in the local file:\"$DeclaredRelease\""
           if [ "$ReleaseTag" == "$DeclaredRelease" ]; then
             echo "There are no new changes in the file \"ReleaseNotes.md\". Please add new version and release notes into this file before make a merge request."
             exit 1; 
           fi
+
           
 
       # - name: Build docker image
