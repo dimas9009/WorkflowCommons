@@ -85,6 +85,7 @@ jobs:
           tag_name: ${{env.NEW_RELEASE_VERSION}}
           release_name: Release ${{env.NEW_RELEASE_VERSION}}
           body: ${{env.NEW_RELEASE_NOTES}}
+          body_path: $GITHUB_WORKSPACE/app/Releases/WorkflowCommons-Latest.mpk
           draft: false
           prerelease: false
 
