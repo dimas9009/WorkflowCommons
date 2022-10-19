@@ -46,8 +46,8 @@ jobs:
       # - name: Create build directory
       #   run: mkdir build-pack/build
       
-      # - name: Create output directory
-      #   run: mkdir $GITHUB_WORKSPACE/out
+      - name: Create output directory
+        run: mkdir $GITHUB_WORKSPACE/out
 
       # - name: Copy application files to build directory
       #   run: cp -v -r app/Source/. build-pack/build
@@ -77,6 +77,7 @@ jobs:
           ReleseNotes=$(awk "/$StartLine/,/$EndLine/" $ReleaseNotesFile | sed 1d | sed '$ d')
           echo "Release notest from file: $ReleseNotes"
           # Put release notes into output path
+          touch 
           echo "$ReleseNotes" >> $GITHUB_WORKSPACE/out/ReleaseNotes.md
 
       - name: Make release in Github
