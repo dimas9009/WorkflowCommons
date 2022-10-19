@@ -76,8 +76,8 @@ jobs:
           # Get release notes using "awk" and trin first and last lines usin "sed"
           ReleseNotes=$(awk "/$StartLine/,/$EndLine/" $ReleaseNotesFile | sed 1d | sed '$ d')
           echo "Release notest from file: $ReleseNotes"
-          # Put release notes into env variable
-          echo "NEW_RELEASE_NOTES=$(echo "$ReleseNotes")" >> $GITHUB_ENV
+          # Put release notes into output path
+          echo "$ReleseNotes" >> /out/ReleaseNotes.md
 
       - name: Make release in Github
         uses: actions/create-release@v1
@@ -87,7 +87,7 @@ jobs:
         with:
           tag_name: ${{env.NEW_RELEASE_VERSION}}
           release_name: Release ${{env.NEW_RELEASE_VERSION}}
-          body: ${{env.NEW_RELEASE_NOTES}}
+          body_path: ./out/ReleaseNotes.md
           draft: false
           prerelease: false
 
@@ -190,9 +190,9 @@ jobs:
       #   if: ${{ always() }}
       #   run: docker ps -q | xargs -n 1 docker logs >> $GITHUB_WORKSPACE/out/docker.log
 
-      # - name: Archive results
-      #   if: ${{ always() }}
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: Results
-      #     path: ${{ github.workspace }}/out/*
+      - name: Archive results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: Results
+          path: ${{ github.workspace }}/out/*
