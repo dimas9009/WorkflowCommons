@@ -78,7 +78,7 @@ jobs:
           echo "Release notest from file: $ReleseNotes"
           # Put release notes into output path
           touch 
-          echo "$ReleseNotes" >> $GITHUB_WORKSPACE/out/ReleaseNotes.md
+          echo "$ReleseNotes" | tee $GITHUB_WORKSPACE/out/ReleaseNotes.md
 
       - name: Make release in Github
         uses: actions/create-release@v1
