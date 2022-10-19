@@ -77,7 +77,6 @@ jobs:
           ReleseNotes=$(awk "/$StartLine/,/$EndLine/" $ReleaseNotesFile | sed 1d | sed '$ d')
           echo "Release notest from file: $ReleseNotes"
           # Put release notes into output path
-          touch 
           echo "$ReleseNotes" | tee $GITHUB_WORKSPACE/out/ReleaseNotes.md
 
       - name: Make release in Github
