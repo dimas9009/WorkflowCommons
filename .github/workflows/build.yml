@@ -57,6 +57,8 @@ jobs:
           # TODO: Change organization and Project
           Organization="dimas9009"
           Project="WorkflowCommons"
+          echo "NEW_RELEASE_BIN_FILE=WorkflowCommons-2-3-1.mpk" >> $GITHUB_ENV
+          #END TODO
           ReleaseNotesFile="ReleaseNotes.md"
           ReleaseTag=$(curl https://api.github.com/repos/$Organization/$Project/releases/latest -s | jq .tag_name -r | tr -d '[:space:]')
           echo "Detected release tag in github:\"$ReleaseTag\""
@@ -95,8 +97,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./app/README.md
-          asset_name: README.md
+          asset_path: ./Releases/${{env.NEW_RELEASE_BIN_FILE}}
+          asset_name: ${{env.NEW_RELEASE_BIN_FILE}}
           asset_content_type: application/zip
 
       # - name: Build docker image
