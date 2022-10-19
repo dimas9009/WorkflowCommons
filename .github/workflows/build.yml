@@ -77,7 +77,7 @@ jobs:
           ReleseNotes=$(awk "/$StartLine/,/$EndLine/" $ReleaseNotesFile | sed 1d | sed '$ d')
           echo "Release notest from file: $ReleseNotes"
           # Put release notes into env variable
-          echo "NEW_RELEASE_NOTES=ABCD" >> $GITHUB_ENV
+          echo "NEW_RELEASE_NOTES=$(echo "$ReleseNotes")" >> $GITHUB_ENV
 
       - name: Make release in Github
         uses: actions/create-release@v1
