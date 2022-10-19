@@ -71,6 +71,10 @@ jobs:
             echo "There are no new changes in the file \"$ReleaseNotesFile\". Please add new version and release notes into this file before make a merge request."
             exit 1; 
           fi
+          StartLine="## Release $DeclaredRelease"
+          EndLine="_______"
+          ReleseNotes=$(cat $ReleaseNotesFile | awk "/$StartLine/,/$EndLine/"" $ReleaseNotesFile | sed 1d | sed '$ d')
+          echo $ReleseNotes
 
           
 
