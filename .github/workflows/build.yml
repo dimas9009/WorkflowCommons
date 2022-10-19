@@ -80,26 +80,24 @@ jobs:
           echo "$ReleseNotes" | tee $GITHUB_WORKSPACE/out/ReleaseNotes.md
 
       - name: Make release in Github
-        uses: actions/create-release@v1
-        id: create_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{env.NEW_RELEASE_VERSION}}
-          release_name: Release ${{env.NEW_RELEASE_VERSION}}
           body_path: ./out/ReleaseNotes.md
-          draft: false
-          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{env.NEW_RELEASE_VERSION}}
+          name: Release ${{env.NEW_RELEASE_VERSION}}
+          files: |
+            ./app/Releases/${{env.NEW_RELEASE_BIN_FILE}}
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./app/Releases/${{env.NEW_RELEASE_BIN_FILE}}
-          asset_name: ${{env.NEW_RELEASE_BIN_FILE}}
-          asset_content_type: application/zip
+      # - name: Upload Release Asset
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+      #     asset_path: ./app/Releases/${{env.NEW_RELEASE_BIN_FILE}}
+      #     asset_name: ${{env.NEW_RELEASE_BIN_FILE}}
+      #     asset_content_type: application/zip
 
       # - name: Build docker image
       #   run: |
