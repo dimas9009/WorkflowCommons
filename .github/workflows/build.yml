@@ -67,10 +67,27 @@ jobs:
             echo "There are no new changes in the file \"$ReleaseNotesFile\". Please add new version and release notes into this file before make a merge request."
             exit 1; 
           fi
+          # Put release version into env variable
+          echo "NEW_RELEASE_VERSION=$DeclaredRelease" >> $GITHUB_ENV
           StartLine="## Release $DeclaredRelease"
           EndLine="_______"
+          # Get release notes using "awk" and trin first and last lines usin "sed"
           ReleseNotes=$(awk "/$StartLine/,/$EndLine/" $ReleaseNotesFile | sed 1d | sed '$ d')
-          echo "$ReleseNotes"
+          echo "Release notest from file: $ReleseNotes"
+          # Put release notes into env variable
+          echo "NEW_RELEASE_NOTES=$ReleseNotes" >> $GITHUB_ENV
+
+      - name: Make release in Github
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{env.NEW_RELEASE_VERSION}}
+          release_name: Release ${{env.NEW_RELEASE_VERSION}}
+          body: ${{env.NEW_RELEASE_NOTES}}
+          draft: false
+          prerelease: false
+
 
       # - name: Build docker image
       #   run: |
