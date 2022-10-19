@@ -69,7 +69,7 @@ jobs:
           fi
           StartLine="## Release $DeclaredRelease"
           EndLine="_______"
-          ReleseNotes=$(cat $ReleaseNotesFile)
+          ReleseNotes=$(echo "$(cat $ReleaseNotesFile)")
           echo $ReleseNotes
 
       # - name: Build docker image
