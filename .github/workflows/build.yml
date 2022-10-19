@@ -70,7 +70,7 @@ jobs:
           StartLine="## Release $DeclaredRelease"
           EndLine="_______"
           ReleseNotes=$(awk "/$StartLine/,/$EndLine/" $ReleaseNotesFile | sed 1d | sed '$ d')
-          echo $ReleseNotes
+          echo "$ReleseNotes"
 
       # - name: Build docker image
       #   run: |
