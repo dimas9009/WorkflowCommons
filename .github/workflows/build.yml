@@ -61,20 +61,16 @@ jobs:
           ReleaseTag=$(curl https://api.github.com/repos/$Organization/$Project/releases/latest -s | jq .tag_name -r | tr -d '[:space:]')
           echo "Detected release tag in github:\"$ReleaseTag\""
           cd $GITHUB_WORKSPACE/app
-          if [ ! -f "$ReleaseNotesFile" ]; then 
-            echo "Unable to find file \"$ReleaseNotesFile\""
-            exit 1; 
-          fi
           DeclaredRelease=$(sed -n 's/^## Release //p' $ReleaseNotesFile | head -n 1 | tr -d '[:space:]')
           echo "Declared release in the local file:\"$DeclaredRelease\""
           if [ "$ReleaseTag" == "$DeclaredRelease" ]; then
             echo "There are no new changes in the file \"$ReleaseNotesFile\". Please add new version and release notes into this file before make a merge request."
             exit 1; 
           fi
-          StartLine="## Release $DeclaredRelease"
-          EndLine="_______"
-          ReleseNotes=$(cat $ReleaseNotesFile | awk "/$StartLine/,/$EndLine/"" $ReleaseNotesFile | sed 1d | sed '$ d')
-          echo $ReleseNotes
+          # StartLine="## Release $DeclaredRelease"
+          # EndLine="_______"
+          # ReleseNotes=$(cat $ReleaseNotesFile | awk "/$StartLine/,/$EndLine/"" $ReleaseNotesFile | sed 1d | sed '$ d')
+          # echo $ReleseNotes
 
           
 
