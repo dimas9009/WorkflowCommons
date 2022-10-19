@@ -69,8 +69,8 @@ jobs:
           fi
           StartLine="## Release $DeclaredRelease"
           EndLine="_______"
-          # ReleseNotes=$(cat $ReleaseNotesFile | awk "/$StartLine/,/$EndLine/"" $ReleaseNotesFile | sed 1d | sed '$ d')
-          # echo $ReleseNotes
+          ReleseNotes=$(cat $ReleaseNotesFile | awk "/$StartLine/,/$EndLine/" $ReleaseNotesFile | sed 1d | sed '$ d')
+          echo $ReleseNotes
 
       # - name: Build docker image
       #   run: |
