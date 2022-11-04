@@ -1,4 +1,4 @@
-name: Mendix WorkflowCommons
+name: Mendix WorkflowCommons autorelease
 
 # Controls when the workflow will run
 on:
