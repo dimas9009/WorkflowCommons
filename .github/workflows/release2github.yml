@@ -77,16 +77,16 @@ jobs:
 
       - name: Check Release notes and make new release tag
         run: |
-          Organization="mendix"
+          Organization="dimas9009"
           Project="WorkflowCommons"
+          cd $GITHUB_WORKSPACE/app
           ReleaseNotesFile="ReleaseNotes.md"
-          if [! -f "$ReleaseNotesFile" ]; then 
+          if [ ! -f "$ReleaseNotesFile" ]; then 
               echo "Unable to find file \"ReleaseNotes.md\""
               exit 1; 
           fi
           ReleaseTag=$(curl https://api.github.com/repos/$Organization/$Project/releases/latest -s | jq .tag_name -r | tr -d '[:space:]')
           echo "Detected release tag in github:\"$ReleaseTag\""
-          cd $GITHUB_WORKSPACE/app
           DeclaredRelease=$(sed -n 's/^## Release //p' $ReleaseNotesFile | head -n 1 | tr -d '[:space:]')
           echo "Declared release in the local file:\"$DeclaredRelease\""
           if [ "$ReleaseTag" == "$DeclaredRelease" ]; then
