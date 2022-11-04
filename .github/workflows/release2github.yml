@@ -81,7 +81,7 @@ jobs:
           Project="WorkflowCommons"
           cd $GITHUB_WORKSPACE/app
           ReleaseNotesFile="ReleaseNotes.md"
-          if [ ! -f "$ReleaseNotesFile" ]; then 
+          if [[ ! -f "$ReleaseNotesFile" ]]; then 
               echo "Unable to find file \"ReleaseNotes.md\""
               exit 1; 
           fi
