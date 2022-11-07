@@ -57,24 +57,6 @@ jobs:
           make run-container &
           timeout 60s bash -c 'until curl -s http://localhost:8080 | grep "<title>Mendix</title>"; do sleep 5; done'
 
-      - name: Start unit tests
-        run: |
-          timeout 60s bash -c 'until curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/rest/wfcunittest/v1/wfcunittests/start | grep "204"; do sleep 5; done'
-
-      - name: Check status of unit tests
-        run: |
-          timeout 120s \
-            bash -c \
-               'until \
-                  curl -s -H "Accept: application/json" -o $GITHUB_WORKSPACE/out/test_results.json -w "%{http_code}" http://localhost:8080/rest/wfcunittest/v1/wfcunittests/status | grep "200" && \
-                  cat $GITHUB_WORKSPACE/out/test_results.json | jq ".Result" | grep "_3_Success"; \
-                do sleep 5; done' \
-            || true
-          if ! cat $GITHUB_WORKSPACE/out/test_results.json | jq ".Result" | grep "_3_Success" ; then
-            echo "Failed to execute tests"
-            exit 1
-          fi
-
       - name: Check Release notes and make new release tag
         run: |
           Organization="dimas9009"
@@ -82,9 +64,10 @@ jobs:
           cd $GITHUB_WORKSPACE/app
           ReleaseNotesFile="ReleaseNotes.md"
           if [[ ! -f "$ReleaseNotesFile" ]]; then 
-              echo "Unable to find file \"ReleaseNotes.md\""
+              echo "Unable to find file \"$ReleaseNotesFile\""
               exit 1; 
           fi
+          # Get release teags using public API
           ReleaseTag=$(curl https://api.github.com/repos/$Organization/$Project/releases/latest -s | jq .tag_name -r | tr -d '[:space:]')
           echo "Detected release tag in github:\"$ReleaseTag\""
           DeclaredRelease=$(sed -n 's/^## Release //p' $ReleaseNotesFile | head -n 1 | tr -d '[:space:]')
@@ -100,7 +83,7 @@ jobs:
           echo "NEW_RELEASE_BIN_FILE=$BinaryFileName" >> $GITHUB_ENV
           StartLine="## Release $DeclaredRelease"
           EndLine="_______"
-          # Get release notes using "awk" and trin first and last lines usin "sed"
+          # Get release notes using "awk" and truncate first and last lines usin "sed"
           ReleseNotes=$(awk "/$StartLine/,/$EndLine/" $ReleaseNotesFile | sed 1d | sed '$ d')
           echo "Release notest from file: $ReleseNotes"
           # Put release notes into output path
@@ -125,7 +108,7 @@ jobs:
             TARGET_MPK="$GITHUB_WORKSPACE/app/Releases/${{env.NEW_RELEASE_BIN_FILE}}"
             ALLOWED_LIST="$GITHUB_WORKSPACE/app/.github/workflows/AllowedWidgetsList.txt"
 
-            if [! -f "$ALLOWED_LIST" ]; then 
+            if [[ ! -f "$ALLOWED_LIST" ]]; then 
               echo "Unable to find file AllowedWidgetsList.txt"
               exit 1; 
             fi
